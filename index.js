@@ -41,8 +41,9 @@ const fetchBook = () => {
         const img = document.createElement("img");
         img.src = booksToBuy.img;
         img.classList.add("card-img-top");
-        img.style = "height: 300px";
-        img.style = "object-fit: cover";
+        card.style.height = "500px";
+        img.style.height = "215px";
+        img.classList.add("object-fit-cover");
 
         const title = document.createElement("p");
         title.innerHTML = "Titolo " + booksToBuy.title;
@@ -53,7 +54,7 @@ const fetchBook = () => {
         price.classList.add("card-text");
         const btnScarta = document.createElement("button");
         btnScarta.classList.add("btn");
-        console.log(btnScarta);
+
         btnScarta.innerHTML = "Scarta";
         btnScarta.classList.add("btn-outline-danger");
         btnScarta.classList.add("mb-3");
@@ -65,9 +66,29 @@ const fetchBook = () => {
         btnBuy.classList.add("btn-outline-success");
         // adesso creo la funzione per eliminare la card
         btnScarta.addEventListener("click", (event) => {
-          event.currentTarget = card.remove();
+          event.currentTarget = col.remove();
         });
-        btnBuy.addEventListener("click", (event) => {});
+        const booksInTheChart = [];
+        class Book {
+          constructor(title_book, price_book, img_book) {
+            this.title = title_book;
+            this.price = price_book;
+            this.img = img_book;
+          }
+        }
+        btnBuy.addEventListener("click", (event) => {
+          const bookCart = new Book(
+            booksToBuy.title,
+            booksToBuy.price,
+            booksToBuy.img
+          );
+          booksInTheChart.push(bookCart);
+          console.log(booksInTheChart);
+          localStorage.setItem(
+            "Book in the card",
+            JSON.stringify(booksInTheChart)
+          );
+        });
         card.appendChild(img);
         card.appendChild(title);
         card.appendChild(price);
@@ -76,7 +97,8 @@ const fetchBook = () => {
         col.appendChild(card);
         row.appendChild(col);
       });
-    });
+    })
+    .catch((error) => console.log(error));
 };
 
 window.onload = () => {
